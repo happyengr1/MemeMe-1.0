@@ -5,6 +5,10 @@
 //  Created by Frances Koo on 9/14/20.
 //  Copyright © 2020 happyengr1. All rights reserved.
 //
+//  History
+//  20 Sep 2020     viewWillAppear(_:) gets called, bottom text field moves when keyboard is shown
+//  21 Sep 2020     remove debug statements
+//
 
 import Foundation
 import UIKit
@@ -17,6 +21,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 
     // MARK: Variables
     var rearCameraButtonIsEnabled : Bool = false
+    var image : UIImage!
+    var memedImage : UIImage!
 
     // MARK: Outlets
     @IBOutlet weak var imagePickerView: UIImageView!
@@ -56,14 +62,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
     //--------------------------------------
     override func viewWillAppear(_ animated: Bool) {
-        print("viewWillAppear")
         
         super.viewWillAppear(animated)
         // Do any additional setup after loading the view.
 
         // Check if rear camera is available
         rearCameraButtonIsEnabled = UIImagePickerController.isCameraDeviceAvailable(UIImagePickerController.CameraDevice.rear)
-        print("camera button is \(rearCameraButtonIsEnabled)")
+        // print("camera button is \(rearCameraButtonIsEnabled)")
 
         // Subscribe to keyboard notifications to allow the view to be raised
         subscribeToKeyboardNotifications()
@@ -154,7 +159,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 
     //--------------------------
     func getKeyboardHeight(_ notification: Notification) -> CGFloat {
-        print("getKeyboardHeight")
         
         let userInfo = notification.userInfo
         let keyboardSize = userInfo![UIResponder.keyboardFrameEndUserInfoKey] as! NSValue   // of CGRect
@@ -166,7 +170,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         if bottomTextField.isEditing, view.frame.origin.y == 0 {
             view.frame.origin.y -= getKeyboardHeight(notification)
         }
-        print("keyboardWillShow: y = \(view.frame.origin.y)")   /* debug */
     }   /* keyboardWillShow */
     
     //--------------------------
@@ -174,7 +177,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         if bottomTextField.isEditing, view.frame.origin.y != 0 {
             view.frame.origin.y = 0
         }
-        print("keyboardWillHide: y = \(view.frame.origin.y)")   /* debug */
     }   /* keyboardWillShow */
     
     //--------------------------
@@ -197,5 +199,47 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 
     } /* unsubscribeToKeyboardNotifications */
 
+    // MARK: Memed Object
+    
+    //--------------------------
+    struct Meme {
+        var topText: String
+        var bottomText: String
+        var originalImage: UIImage
+        var memedImage: UIImage
+    }
+    
+    //--------------------------
+    func save() {
+        // Create the meme
+        let meme = Meme(topText: topTextField.text!,
+                        bottomText: bottomTextField.text!,
+                        originalImage: imagePickerView.image!,
+                        memedImage: memedImage)
+    }   /* save */
+    
+    //--------------------------
+    func generateMemedImage() -> UIImage {
+        
+        // TODO: Hide toolbar and navbar
+        self.navigationController?.setToolbarHidden(true, animated: false)
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
 
+        // render view to an image
+        UIGraphicsBeginImageContext(self.view.frame.size)
+        view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
+        
+        let memedImage:UIImage =
+            UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        
+        // TODO: Show toolbar and navbar
+        self.navigationController?.setToolbarHidden(false, animated: false)
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+
+        return memedImage
+        
+    }   /* generateMemedImage */
+    
+    
 }
