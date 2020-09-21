@@ -50,12 +50,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         topTextField.text = "TOP"
         bottomTextField.text = "BOTTOM"
         
-        self.navigationController?.modalPresentationStyle = UIModalPresentationStyle.fullScreen
+        self.modalPresentationStyle = .fullScreen
         
     }   /* viewDidLoad */
         
     //--------------------------------------
-    func viewWillAppear() {
+    override func viewWillAppear(_ animated: Bool) {
         print("viewWillAppear")
         
         super.viewWillAppear(animated)

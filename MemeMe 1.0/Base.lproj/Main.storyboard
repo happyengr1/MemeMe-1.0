@@ -12,7 +12,7 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="MemeMe_1_0" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="fullScreen" id="BYZ-38-t0r" customClass="ViewController" customModule="MemeMe_1_0" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -70,6 +70,7 @@
                             <constraint firstItem="Xt4-dN-mrI" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="xUA-mF-p6w"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="cS4-IN-FxN"/>
                     <connections>
                         <outlet property="bottomTextField" destination="Xt4-dN-mrI" id="A1N-Mi-hK1"/>
                         <outlet property="imagePickerView" destination="2J9-aC-a6e" id="gBV-rz-ykn"/>
@@ -78,7 +79,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="136.23188405797103" y="113.83928571428571"/>
+            <point key="canvasLocation" x="1046.376811594203" y="113.83928571428571"/>
         </scene>
     </scenes>
     <resources>
