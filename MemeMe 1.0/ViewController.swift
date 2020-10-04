@@ -8,6 +8,11 @@
 //  History
 //  20 Sep 2020     viewWillAppear(_:) gets called, bottom text field moves when keyboard is shown
 //  21 Sep 2020     remove debug statements
+//  29 Sep 2020     added share button
+//                  check if memeImage is valid
+//  2 Oct 2020      added checkForValidMeme(), showActivityView()
+//                  added completionWithItemsHandler(), save()
+//  3 Oct 2020      added checkForValidInfo(), activity view is shown
 //
 
 import Foundation
@@ -23,6 +28,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var rearCameraButtonIsEnabled : Bool = false
     var image : UIImage!
     var memedImage : UIImage!
+    var shareButtonIsEnabled : Bool = false
+    var imageIsValid : Bool = false
+    var memedImageIsValid : Bool = false
 
     // MARK: Outlets
     @IBOutlet weak var imagePickerView: UIImageView!
@@ -72,7 +80,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 
         // Subscribe to keyboard notifications to allow the view to be raised
         subscribeToKeyboardNotifications()
-                
+        
     }   /* viewWillAppear */
 
     //--------------------------------------
@@ -86,9 +94,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     //-------------------------------------------
     @IBAction func pickAnImage(_ sender: Any) {            /* IBAction: pick button */
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        self.present(imagePicker, animated: true, completion: nil)
+            let imagePicker = UIImagePickerController()
+            imagePicker.delegate = self
+            self.present(imagePicker, animated: true, completion: nil)
     }   /* pickAnImage */
     
     //--------------------------------------
@@ -97,6 +105,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             imagePickerView.image = image
             picker.sourceType = .photoLibrary
             dismiss(animated: true, completion: nil)
+            self.image = image
+            imageIsValid = true
         }
     }   /* imagePickerController */
 
@@ -108,6 +118,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             pickerController.sourceType = .camera
             pickerController.allowsEditing = false
             self.present(pickerController, animated: true, completion: nil)
+            imageIsValid = true
 
         } else {
             print("**** Rear camera not available ****")
@@ -136,7 +147,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
     }   /* textField */
 
-    
     //-------------------------------------------
     func textFieldDidBeginEditing(_ textField: UITextField) {
         
@@ -236,10 +246,90 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         // TODO: Show toolbar and navbar
         self.navigationController?.setToolbarHidden(false, animated: false)
         self.navigationController?.setNavigationBarHidden(false, animated: false)
+        
+        self.memedImageIsValid = true
+        self.memedImage = memedImage
 
         return memedImage
         
     }   /* generateMemedImage */
     
+    // MARK: Share
+
+    //--------------------------
+    func checkForValidInfo() -> Bool {
+
+        var isValidInfo: Bool = true
+        
+        if (topTextField.text == "TOP" || topTextField.text == "") {
+            isValidInfo = false
+        }
+
+        if (bottomTextField.text == "BOTTOM" || bottomTextField.text == "") {
+            isValidInfo = false
+        }
+
+        if (self.imageIsValid == false) {
+            isValidInfo = false
+        }
+
+        print("checkForValidInfo: Info is valid = \(isValidInfo)")
+        return isValidInfo
+
+    }   /* checkForValidInfo */
+    
+
+    //--------------------------
+    func checkForValidMeme() -> Bool {
+
+        var isValidMeme: Bool = true
+        
+        isValidMeme = checkForValidInfo()
+        
+        if (self.memedImageIsValid == false) {
+            isValidMeme = false
+        }
+
+        print("checkForValidMeme: Meme is valid = \(isValidMeme)")
+        return isValidMeme
+
+    }   /* checkForValidMeme */
+    
+    //--------------------------
+    func showActivityView() {
+        
+        var memedImg : UIImage = generateMemedImage() as UIImage
+        
+        if (checkForValidMeme() == true) {
+            
+            self.save()                 /* DEBUG should I call it here or later? */
+
+            // Launch the activity view controller
+            let activityController = UIActivityViewController(activityItems: [memedImg], applicationActivities: nil)
+            self.present(activityController, animated: true, completion: nil)
+
+            activityController.completionWithItemsHandler = {
+                (activity, success, items, error) in
+                if (success && (error != nil)) {
+                    // Save the info into the meme structure
+                    self.save()
+                }
+            }
+        } else {
+            print("showActivityView: No meme was generated")
+        }
+    }   /* showActivityView */
+
+    //--------------------------
+    @IBAction func shareButton(_ sender: Any) {            /* IBAction: share button */
+
+        /* Check if meme has been created, by checking all the meme fields */
+        if (checkForValidInfo() == true) {
+            /* Allow user to share the meme */
+            showActivityView()
+        } else {
+            print("Meme data is incomplete")
+        }
+    }   /* shareButton */
     
 }
