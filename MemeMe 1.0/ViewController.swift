@@ -302,8 +302,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         if (checkForValidMeme() == true) {
             
-            self.save()                 /* DEBUG should I call it here or later? */
-
             // Launch the activity view controller
             let activityController = UIActivityViewController(activityItems: [memedImg], applicationActivities: nil)
             self.present(activityController, animated: true, completion: nil)
