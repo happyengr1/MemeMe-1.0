@@ -13,6 +13,7 @@
 //  2 Oct 2020      added checkForValidMeme(), showActivityView()
 //                  added completionWithItemsHandler(), save()
 //  3 Oct 2020      added checkForValidInfo(), activity view is shown
+//  4 Oct 2020      only allow Activity View Controller for iPhone
 //
 
 import Foundation
@@ -204,7 +205,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func unsubscribeToKeyboardNotifications() {
 
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
 
     } /* unsubscribeToKeyboardNotifications */
@@ -273,7 +273,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             isValidInfo = false
         }
 
-        print("checkForValidInfo: Info is valid = \(isValidInfo)")
         return isValidInfo
 
     }   /* checkForValidInfo */
@@ -290,7 +289,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             isValidMeme = false
         }
 
-        print("checkForValidMeme: Meme is valid = \(isValidMeme)")
         return isValidMeme
 
     }   /* checkForValidMeme */
@@ -298,26 +296,42 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     //--------------------------
     func showActivityView() {
         
+        var goAhead: Bool = false
+
         var memedImg : UIImage = generateMemedImage() as UIImage
         
         if (checkForValidMeme() == true) {
             
             // Launch the activity view controller
             let activityController = UIActivityViewController(activityItems: [memedImg], applicationActivities: nil)
-            self.present(activityController, animated: true, completion: nil)
+            
+            // for iPhone
+            if (UIDevice.current.userInterfaceIdiom == .phone) {
+                print("showActivityView: running on iPhone")
+                self.present(activityController, animated: true, completion: nil)
+                goAhead = true
 
-            activityController.completionWithItemsHandler = {
-                (activity, success, items, error) in
-                if (success && (error != nil)) {
-                    // Save the info into the meme structure
-                    self.save()
+            // for other devices
+            } else {
+                print(UIDevice.current.model, terminator: "")
+                print(" is not a supported device for this app")
+                goAhead = false
+            }
+            
+            if goAhead {
+                activityController.completionWithItemsHandler = {
+                    (activity, success, items, error) in
+                    if (success && (error != nil)) {
+                        // Save the info into the meme structure
+                        self.save()
+                    }
                 }
             }
         } else {
-            print("showActivityView: No meme was generated")
+            print("showActivityView: showActivityView: No meme was generated")
         }
     }   /* showActivityView */
-
+    
     //--------------------------
     @IBAction func shareButton(_ sender: Any) {            /* IBAction: share button */
 
@@ -326,7 +340,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             /* Allow user to share the meme */
             showActivityView()
         } else {
-            print("Meme data is incomplete")
+            print("shareButton: Meme data is incomplete")
         }
     }   /* shareButton */
     
