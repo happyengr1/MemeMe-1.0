@@ -46,7 +46,7 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="bottom" borderStyle="line" textAlignment="center" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Xt4-dN-mrI" userLabel="bottomTextField">
-                                <rect key="frame" x="0.0" y="712.5" width="414" height="50.5"/>
+                                <rect key="frame" x="0.0" y="485" width="414" height="50.5"/>
                                 <color key="textColor" systemColor="systemOrangeColor"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
@@ -69,9 +69,9 @@
                             <constraint firstItem="I7I-YB-uoX" firstAttribute="top" secondItem="2J9-aC-a6e" secondAttribute="top" id="4NC-Ev-isq"/>
                             <constraint firstItem="I7I-YB-uoX" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="4nM-bU-cSt"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="I7I-YB-uoX" secondAttribute="trailing" id="6xk-cV-YDv" userLabel=" topTextField.trailing = Safe Area.trailing"/>
+                            <constraint firstItem="Xt4-dN-mrI" firstAttribute="bottom" secondItem="2J9-aC-a6e" secondAttribute="bottom" id="7Do-WN-lsv"/>
                             <constraint firstItem="2J9-aC-a6e" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="30" id="GN5-Ku-5nn"/>
                             <constraint firstItem="3HR-Eq-uA4" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="PYb-id-eyn"/>
-                            <constraint firstItem="3HR-Eq-uA4" firstAttribute="top" secondItem="Xt4-dN-mrI" secondAttribute="bottom" constant="50" id="QFV-cn-P8q"/>
                             <constraint firstItem="3HR-Eq-uA4" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="Qje-nO-DZs"/>
                             <constraint firstItem="2J9-aC-a6e" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.9" id="azu-Zb-MUT"/>
                             <constraint firstItem="FY4-6f-hHD" firstAttribute="leading" secondItem="2J9-aC-a6e" secondAttribute="leading" constant="25" id="dvx-Dx-XBT"/>
