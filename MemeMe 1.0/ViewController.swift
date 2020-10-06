@@ -14,6 +14,7 @@
 //                  added completionWithItemsHandler(), save()
 //  3 Oct 2020      added checkForValidInfo(), activity view is shown
 //  4 Oct 2020      only allow Activity View Controller for iPhone
+//  6 Oct 2020      Feedback: Add chooseImageFromSource() to reduce redundancy
 //
 
 import Foundation
@@ -99,12 +100,22 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             imagePicker.delegate = self
             self.present(imagePicker, animated: true, completion: nil)
     }   /* pickAnImage */
+
+    //--------------------------------------
+    func chooseImageFromSource(source: UIImagePickerController.SourceType) {
+        let pickerController = UIImagePickerController()
+        pickerController.delegate = self
+        pickerController.allowsEditing = false
+        pickerController.sourceType = source
+        present(pickerController, animated: true, completion: nil)
+    }   /* chooseImageFromSource */
     
     //--------------------------------------
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+
         if let image = info[.originalImage] as? UIImage {
             imagePickerView.image = image
-            picker.sourceType = .photoLibrary
+            chooseImageFromSource(source: .photoLibrary)
             dismiss(animated: true, completion: nil)
             self.image = image
             imageIsValid = true
@@ -112,20 +123,23 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }   /* imagePickerController */
 
     //-------------------------------------------
-    @IBAction func pickAnImageFromCamera(_ sender: Any) {  /* IBAction: camera button */
+    @IBAction func pickAnImageFromCamera(_ sender: Any, idFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+                
         if (rearCameraButtonIsEnabled) {
-            let pickerController = UIImagePickerController()
-            pickerController.delegate = self
-            pickerController.sourceType = .camera
-            pickerController.allowsEditing = false
-            self.present(pickerController, animated: true, completion: nil)
-            imageIsValid = true
+            
+            if let image = info[.originalImage] as? UIImage {
+                imagePickerView.image = image
+                chooseImageFromSource(source: .camera)
+                dismiss(animated: true, completion: nil)
+                self.image = image
+                imageIsValid = true
+            }
 
         } else {
             print("**** Rear camera not available ****")
         }
-        
-    }   /* pickAnImageFromCamera */
+    }  /* IBAction: pickAnImageFromCamera */
+
     
     //--------------------------
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
