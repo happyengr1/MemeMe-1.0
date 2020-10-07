@@ -21,8 +21,8 @@
 //                  Code Review: Added setupTextField() to reduce redundancy
 //                  Code Review: Removed redundancies in chooseImageFromSource()
 //                  Code Review: Organize to Properties, Functions, Extensions
-//                  CodeReview: Made extensions for UITextFieldDelegate
-//                  CodeReview: Made extensions for UIImagePickerControllerDelegate, UINavigationControllerDelegate 
+//                  Code Review: Made extensions for UITextFieldDelegate
+//                  Code Review: Made extensions for UIImagePickerControllerDelegate, UINavigationControllerDelegate
 //
 
 import Foundation
