@@ -17,12 +17,14 @@
 //  6 Oct 2020      Feedback: Add chooseImageFromSource() to reduce redundancy
 //                  Feedback: Add Navigation Bar and Action Button
 //                  Feedback: Disable Camera Button if camera not available
+//  7 Oct 2020      Code Review: Renamed ViewController to MemeEditorViewController
+//                  Code Review: Added setupTextField() to reduce redundancy
 //
 
 import Foundation
 import UIKit
 
-class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
+class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
 
     // MARK: Constants
     let animated : Bool = true
@@ -53,21 +55,22 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     // MARK: View
 
     //--------------------------------------
+    func setupTextField(_ textField: UITextField, text: String) {
+ 
+        textField.delegate    = self
+        textField.defaultTextAttributes = memeTextAttributes
+        textField.textAlignment = .center
+        textField.text = text
+
+    }   /* setupTextField */
+    
+    //--------------------------------------
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-
-        self.topTextField.delegate    = self
-        self.bottomTextField.delegate = self
         
-        topTextField.defaultTextAttributes = memeTextAttributes
-        bottomTextField.defaultTextAttributes = memeTextAttributes
-
-        topTextField.textAlignment = .center
-        bottomTextField.textAlignment = .center
-        
-        topTextField.text = "TOP"
-        bottomTextField.text = "BOTTOM"
+        setupTextField(topTextField, text: "TOP")
+        setupTextField(bottomTextField, text: "BOTTOM")
         
         self.modalPresentationStyle = .fullScreen
         
