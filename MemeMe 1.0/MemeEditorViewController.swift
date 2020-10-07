@@ -20,6 +20,7 @@
 //  7 Oct 2020      Code Review: Renamed ViewController to MemeEditorViewController
 //                  Code Review: Added setupTextField() to reduce redundancy
 //                  Code Review: Removed redundancies in chooseImageFromSource()
+//                  Code Review: Organize to Properties, Functions, Extensions
 //
 
 import Foundation
@@ -27,7 +28,7 @@ import UIKit
 
 class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
 
-    // MARK: Constants
+    // MARK: - Constants
     let animated : Bool = true
     let alignCenter : Int = 1
 
@@ -38,13 +39,21 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     var actionButtonIsEnabled : Bool = false
     var imageIsValid : Bool = false
     var memedImageIsValid : Bool = false
-
-    // MARK: Outlets
+    
+    // MARK: - Outlets
     @IBOutlet weak var imagePickerView: UIImageView!
     @IBOutlet weak var topTextField: UITextField!
     @IBOutlet weak var bottomTextField: UITextField!
     @IBOutlet weak var cameraButton: UIBarButtonItem!
     
+    // MARK: Structures
+    struct Meme {
+        var topText: String
+        var bottomText: String
+        var originalImage: UIImage
+        var memedImage: UIImage
+    }
+
     // MARK: Attributed String
     let memeTextAttributes: [NSAttributedString.Key : Any] = [
         NSAttributedString.Key.foregroundColor: UIColor.white,
@@ -53,7 +62,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40.0)!
     ]
 
-    // MARK: View
+    // MARK: - View
 
     //--------------------------------------
     func setupTextField(_ textField: UITextField, text: String) {
@@ -156,7 +165,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     }
 
     
-    // MARK: Text Field
+    // MARK: - Text Field
 
     //-------------------------------------------
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -188,7 +197,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         return true
     }   /* textFieldShouldReturn */
 
-    // MARK: Keyboard
+    // MARK: - Keyboard
 
     //--------------------------
     func getKeyboardHeight(_ notification: Notification) -> CGFloat {
@@ -231,16 +240,8 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
 
     } /* unsubscribeToKeyboardNotifications */
 
-    // MARK: Memed Object
-    
-    //--------------------------
-    struct Meme {
-        var topText: String
-        var bottomText: String
-        var originalImage: UIImage
-        var memedImage: UIImage
-    }
-    
+    // MARK: - Memed Object
+        
     //--------------------------
     func save() {
         // Create the meme
@@ -276,7 +277,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         
     }   /* generateMemedImage */
     
-    // MARK: Share
+    // MARK: - Action / Share
 
     //--------------------------
     func checkForValidInfo() -> Bool {
