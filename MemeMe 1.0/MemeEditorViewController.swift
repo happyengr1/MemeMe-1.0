@@ -21,12 +21,14 @@
 //                  Code Review: Added setupTextField() to reduce redundancy
 //                  Code Review: Removed redundancies in chooseImageFromSource()
 //                  Code Review: Organize to Properties, Functions, Extensions
+//                  CodeReview: Made extensions for UITextFieldDelegate
+//                  CodeReview: Made extensions for UIImagePickerControllerDelegate, UINavigationControllerDelegate 
 //
 
 import Foundation
 import UIKit
 
-class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
+class MemeEditorViewController: UIViewController {
 
     // MARK: - Constants
     let animated : Bool = true
@@ -109,137 +111,6 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     }   /* viewWillDisappear */
     
     
-    // MARK: Image Pickers
-    
-    //-------------------------------------------
-    @IBAction func pickAnImage(_ sender: Any) {            /* IBAction: pick button */
-            let imagePicker = UIImagePickerController()
-            imagePicker.delegate = self
-            self.present(imagePicker, animated: true, completion: nil)
-    }   /* pickAnImage */
-
-    //--------------------------------------
-    func chooseImageFromSource(source: UIImagePickerController.SourceType) {
-    
-        let pickerController = UIImagePickerController()
-
-        pickerController.delegate = self
-        pickerController.allowsEditing = false
-        pickerController.sourceType = source
-        present(pickerController, animated: true, completion: nil)
-        imageIsValid = true
-
-    }   /* chooseImageFromSource */
-    
-    //--------------------------------------
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-
-        if let image = info[.originalImage] as? UIImage {
-            imagePickerView.image = image
-            chooseImageFromSource(source: .photoLibrary)
-            dismiss(animated: true, completion: nil)
-        }
-    }   /* imagePickerController */
-
-    //-------------------------------------------
-    @IBAction func pickAnImageFromCamera(_ sender: Any, idFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-                
-        if (rearCameraButtonIsEnabled) {
-            
-            if let image = info[.originalImage] as? UIImage {
-                imagePickerView.image = image
-                chooseImageFromSource(source: .camera)
-                dismiss(animated: true, completion: nil)
-            }
-
-        } else {
-            print("**** Rear camera not available ****")
-        }
-    }  /* IBAction: pickAnImageFromCamera */
-
-    
-    //--------------------------
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-    //--------------------------
-        dismiss(animated: true, completion: nil)
-    }
-
-    
-    // MARK: - Text Field
-
-    //-------------------------------------------
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
-        // Figure out what next text will be if we return true
-        var newText = textField.text! as NSString
-        newText = newText.replacingCharacters(in: range, with: string) as NSString
-        
-        // returning true gives text field permission to change its text
-        return true;
-        
-    }   /* textField */
-
-    //-------------------------------------------
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        
-        // Clear text when user clicks in text field
-        textField.text = ""
-        
-        // Automatically show the keyboard
-        textField.becomeFirstResponder()
-        
-    }   /* textFieldDidBeginEditing */
-    
-    //-------------------------------------------
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        // Dismiss keyboard when the user presswa return
-        textField.resignFirstResponder()
-        return true
-    }   /* textFieldShouldReturn */
-
-    // MARK: - Keyboard
-
-    //--------------------------
-    func getKeyboardHeight(_ notification: Notification) -> CGFloat {
-        
-        let userInfo = notification.userInfo
-        let keyboardSize = userInfo![UIResponder.keyboardFrameEndUserInfoKey] as! NSValue   // of CGRect
-        return keyboardSize.cgRectValue.height
-    }
-    
-    //--------------------------
-    @objc func keyboardWillShow(_ notification: Notification) {
-        if bottomTextField.isEditing, view.frame.origin.y == 0 {
-            view.frame.origin.y -= getKeyboardHeight(notification)
-        }
-    }   /* keyboardWillShow */
-    
-    //--------------------------
-    @objc func keyboardWillHide(_ notification: Notification) {
-        if bottomTextField.isEditing, view.frame.origin.y != 0 {
-            view.frame.origin.y = 0
-        }
-    }   /* keyboardWillShow */
-    
-    //--------------------------
-    func subscribeToKeyboardNotifications() {
-
-        // Subscribe to keyboardWillShow
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        
-        // Subscribe to keyboardWillHide
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
-    }   /* subscribeToKeyboardNotifications */
-
-    //--------------------------
-    func unsubscribeToKeyboardNotifications() {
-
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
-
-    } /* unsubscribeToKeyboardNotifications */
-
     // MARK: - Memed Object
         
     //--------------------------
@@ -368,3 +239,144 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     }   /* actionButton */
     
 }
+
+// MARK: - Image Pickers
+
+// MemedEditorViewController Extension for Image Picker
+extension MemeEditorViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+
+    //-------------------------------------------
+    @IBAction func pickAnImage(_ sender: Any) {            /* IBAction: pick button */
+            let imagePicker = UIImagePickerController()
+            imagePicker.delegate = self
+            self.present(imagePicker, animated: true, completion: nil)
+    }   /* pickAnImage */
+
+    //--------------------------------------
+    func chooseImageFromSource(source: UIImagePickerController.SourceType) {
+
+        let pickerController = UIImagePickerController()
+
+        pickerController.delegate = self
+        pickerController.allowsEditing = false
+        pickerController.sourceType = source
+        present(pickerController, animated: true, completion: nil)
+        imageIsValid = true
+
+    }   /* chooseImageFromSource */
+
+    //--------------------------------------
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+
+        if let image = info[.originalImage] as? UIImage {
+            imagePickerView.image = image
+            chooseImageFromSource(source: .photoLibrary)
+            dismiss(animated: true, completion: nil)
+        }
+    }   /* imagePickerController */
+
+    //-------------------------------------------
+    @IBAction func pickAnImageFromCamera(_ sender: Any, idFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+                
+        if (rearCameraButtonIsEnabled) {
+            
+            if let image = info[.originalImage] as? UIImage {
+                imagePickerView.image = image
+                chooseImageFromSource(source: .camera)
+                dismiss(animated: true, completion: nil)
+            }
+
+        } else {
+            print("**** Rear camera not available ****")
+        }
+    }  /* IBAction: pickAnImageFromCamera */
+
+
+    //--------------------------
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+    //--------------------------
+        dismiss(animated: true, completion: nil)
+    }
+}   /* MemeEditorViewController Extension for Imiage Picker */
+
+
+
+// MARK: - Text Fields
+
+// MemedEditorViewController Extension for Text Fields
+extension MemeEditorViewController: UITextFieldDelegate {
+
+    //-------------------------------------------
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        // Figure out what next text will be if we return true
+        var newText = textField.text! as NSString
+        newText = newText.replacingCharacters(in: range, with: string) as NSString
+        
+        // returning true gives text field permission to change its text
+        return true;
+        
+    }   /* textField */
+
+    //-------------------------------------------
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        
+        // Clear text when user clicks in text field
+        textField.text = ""
+        
+        // Automatically show the keyboard
+        textField.becomeFirstResponder()
+        
+    }   /* textFieldDidBeginEditing */
+    
+    //-------------------------------------------
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        // Dismiss keyboard when the user presswa return
+        textField.resignFirstResponder()
+        return true
+    }   /* textFieldShouldReturn */
+
+    // MARK: - Keyboard
+
+    //--------------------------
+    func getKeyboardHeight(_ notification: Notification) -> CGFloat {
+        
+        let userInfo = notification.userInfo
+        let keyboardSize = userInfo![UIResponder.keyboardFrameEndUserInfoKey] as! NSValue   // of CGRect
+        return keyboardSize.cgRectValue.height
+    }
+    
+    //--------------------------
+    @objc func keyboardWillShow(_ notification: Notification) {
+        if bottomTextField.isEditing, view.frame.origin.y == 0 {
+            view.frame.origin.y -= getKeyboardHeight(notification)
+        }
+    }   /* keyboardWillShow */
+    
+    //--------------------------
+    @objc func keyboardWillHide(_ notification: Notification) {
+        if bottomTextField.isEditing, view.frame.origin.y != 0 {
+            view.frame.origin.y = 0
+        }
+    }   /* keyboardWillShow */
+    
+    //--------------------------
+    func subscribeToKeyboardNotifications() {
+
+        // Subscribe to keyboardWillShow
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        
+        // Subscribe to keyboardWillHide
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+    }   /* subscribeToKeyboardNotifications */
+
+    //--------------------------
+    func unsubscribeToKeyboardNotifications() {
+
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+
+    } /* unsubscribeToKeyboardNotifications */
+    
+}   /* MemeEditorViewController Extension for Text Fields*/
