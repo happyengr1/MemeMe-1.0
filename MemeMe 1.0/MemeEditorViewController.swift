@@ -19,6 +19,7 @@
 //                  Feedback: Disable Camera Button if camera not available
 //  7 Oct 2020      Code Review: Renamed ViewController to MemeEditorViewController
 //                  Code Review: Added setupTextField() to reduce redundancy
+//                  Code Review: Removed redundancies in chooseImageFromSource()
 //
 
 import Foundation
@@ -117,7 +118,8 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         pickerController.allowsEditing = false
         pickerController.sourceType = source
         present(pickerController, animated: true, completion: nil)
- 
+        imageIsValid = true
+
     }   /* chooseImageFromSource */
     
     //--------------------------------------
@@ -127,8 +129,6 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
             imagePickerView.image = image
             chooseImageFromSource(source: .photoLibrary)
             dismiss(animated: true, completion: nil)
-            self.image = image
-            imageIsValid = true
         }
     }   /* imagePickerController */
 
@@ -141,8 +141,6 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
                 imagePickerView.image = image
                 chooseImageFromSource(source: .camera)
                 dismiss(animated: true, completion: nil)
-                self.image = image
-                imageIsValid = true
             }
 
         } else {
