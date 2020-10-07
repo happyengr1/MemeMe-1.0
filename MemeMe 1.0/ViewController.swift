@@ -15,6 +15,8 @@
 //  3 Oct 2020      added checkForValidInfo(), activity view is shown
 //  4 Oct 2020      only allow Activity View Controller for iPhone
 //  6 Oct 2020      Feedback: Add chooseImageFromSource() to reduce redundancy
+//                  Feedback: Add Navigation Bar and Action Button
+//                  Feedback: Disable Camera Button if camera not available
 //
 
 import Foundation
@@ -30,7 +32,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var rearCameraButtonIsEnabled : Bool = false
     var image : UIImage!
     var memedImage : UIImage!
-    var shareButtonIsEnabled : Bool = false
+    var actionButtonIsEnabled : Bool = false
     var imageIsValid : Bool = false
     var memedImageIsValid : Bool = false
 
@@ -38,7 +40,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var imagePickerView: UIImageView!
     @IBOutlet weak var topTextField: UITextField!
     @IBOutlet weak var bottomTextField: UITextField!
-
+    @IBOutlet weak var cameraButton: UIBarButtonItem!
+    
     // MARK: Attributed String
     let memeTextAttributes: [NSAttributedString.Key : Any] = [
         NSAttributedString.Key.foregroundColor: UIColor.white,
@@ -79,10 +82,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         // Check if rear camera is available
         rearCameraButtonIsEnabled = UIImagePickerController.isCameraDeviceAvailable(UIImagePickerController.CameraDevice.rear)
         // print("camera button is \(rearCameraButtonIsEnabled)")
+        cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
 
         // Subscribe to keyboard notifications to allow the view to be raised
         subscribeToKeyboardNotifications()
-        
+
     }   /* viewWillAppear */
 
     //--------------------------------------
@@ -103,11 +107,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 
     //--------------------------------------
     func chooseImageFromSource(source: UIImagePickerController.SourceType) {
+    
         let pickerController = UIImagePickerController()
+
         pickerController.delegate = self
         pickerController.allowsEditing = false
         pickerController.sourceType = source
         present(pickerController, animated: true, completion: nil)
+ 
     }   /* chooseImageFromSource */
     
     //--------------------------------------
@@ -347,15 +354,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }   /* showActivityView */
     
     //--------------------------
-    @IBAction func shareButton(_ sender: Any) {            /* IBAction: share button */
+    @IBAction func actionButton(_ sender: Any) {            /* IBAction: action button */
 
         /* Check if meme has been created, by checking all the meme fields */
         if (checkForValidInfo() == true) {
             /* Allow user to share the meme */
             showActivityView()
         } else {
-            print("shareButton: Meme data is incomplete")
+            print("actionButton: Meme data is incomplete")
         }
-    }   /* shareButton */
+    }   /* actionButton */
     
 }
