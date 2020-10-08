@@ -51,14 +51,6 @@ class MemeEditorViewController: UIViewController {
     @IBOutlet weak var bottomTextField: UITextField!
     @IBOutlet weak var cameraButton: UIBarButtonItem!
     
-    // MARK: Structures
-    struct Meme {
-        var topText: String
-        var bottomText: String
-        var originalImage: UIImage
-        var memedImage: UIImage
-    }
-
     // MARK: Attributed String
     let memeTextAttributes: [NSAttributedString.Key : Any] = [
         NSAttributedString.Key.foregroundColor: UIColor.white,
@@ -124,13 +116,20 @@ class MemeEditorViewController: UIViewController {
                         originalImage: imagePickerView.image!,
                         memedImage: memedImage)
     }   /* save */
+
+    //--------------------------
+    func hideToolbars(_ isHidden: Bool) {
+        
+        self.navigationController?.setToolbarHidden(isHidden, animated: false)
+        self.navigationController?.setNavigationBarHidden(isHidden, animated: false)
+
+    }   /* hideToolbars */
     
     //--------------------------
     func generateMemedImage() -> UIImage {
         
-        // TODO: Hide toolbar and navbar
-        self.navigationController?.setToolbarHidden(true, animated: false)
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
+        // Hide toolbar and navbar
+        hideToolbars(true)
 
         // render view to an image
         UIGraphicsBeginImageContext(self.view.frame.size)
@@ -140,10 +139,9 @@ class MemeEditorViewController: UIViewController {
             UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         
-        // TODO: Show toolbar and navbar
-        self.navigationController?.setToolbarHidden(false, animated: false)
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
-        
+        // Show toolbar and navbar
+        hideToolbars(false)
+
         self.memedImageIsValid = true
         self.memedImage = memedImage
 

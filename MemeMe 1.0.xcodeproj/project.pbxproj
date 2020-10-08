@@ -13,6 +13,7 @@
 		068F84482510890500F215BD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 068F84462510890500F215BD /* Main.storyboard */; };
 		068F844A2510890700F215BD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 068F84492510890700F215BD /* Assets.xcassets */; };
 		068F844D2510890700F215BD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 068F844B2510890700F215BD /* LaunchScreen.storyboard */; };
+		0693DB8F252F993300FA397B /* Meme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0693DB8E252F993300FA397B /* Meme.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		068F84492510890700F215BD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		068F844C2510890700F215BD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		068F844E2510890700F215BD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0693DB8E252F993300FA397B /* Meme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meme.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 				068F84422510890500F215BD /* SceneDelegate.swift */,
 				068F84442510890500F215BD /* MemeEditorViewController.swift */,
 				068F84462510890500F215BD /* Main.storyboard */,
+				0693DB8E252F993300FA397B /* Meme.swift */,
 				068F84492510890700F215BD /* Assets.xcassets */,
 				068F844B2510890700F215BD /* LaunchScreen.storyboard */,
 				068F844E2510890700F215BD /* Info.plist */,
@@ -139,6 +142,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				068F84452510890500F215BD /* MemeEditorViewController.swift in Sources */,
+				0693DB8F252F993300FA397B /* Meme.swift in Sources */,
 				068F84412510890500F215BD /* AppDelegate.swift in Sources */,
 				068F84432510890500F215BD /* SceneDelegate.swift in Sources */,
 			);
