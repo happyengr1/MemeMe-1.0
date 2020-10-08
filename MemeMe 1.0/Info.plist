@@ -64,5 +64,7 @@
 	<string>Use camera to take pictures for meme</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Use photos to generate memes</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Save the generated meme</string>
 </dict>
 </plist>

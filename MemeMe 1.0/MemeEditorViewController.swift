@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  MemeEditorViewController.swift
 //  MemeMe 1.0
 //
 //  Created by Frances Koo on 9/14/20.
@@ -23,6 +23,9 @@
 //                  Code Review: Organize to Properties, Functions, Extensions
 //                  Code Review: Made extensions for UITextFieldDelegate
 //                  Code Review: Made extensions for UIImagePickerControllerDelegate, UINavigationControllerDelegate
+//  8 Oct 2020      Feedback: Changed comment ViewController.soft --> MemeEditorViewController.swift
+//                  Feedback: Changed image view size (bottom of navigation bar to top of toolbar)
+//                  Feedback: Added permission to save photos in info.plist
 //
 
 import Foundation
