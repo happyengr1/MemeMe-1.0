@@ -1,9 +1,11 @@
 //
 //  AppDelegate.swift
-//  MemeMe 1.0
+//  MemeMe 2.0
 //
 //  Created by Frances Koo on 9/14/20.
 //  Copyright © 2020 happyengr1. All rights reserved.
+//
+//  27 Nov 2020 Added the memes shared model
 //
 
 import UIKit
@@ -11,7 +13,13 @@ import UIKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    // MARK: Properties
 
+    // from UIKit 8.4
+    // var window: UIWindow?
+
+    // memes is a shared model - shared between Tab View Controller and Collection View Controller
+    var memes = [Meme]()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.

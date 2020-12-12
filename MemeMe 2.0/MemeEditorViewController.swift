@@ -1,31 +1,13 @@
 //
 //  MemeEditorViewController.swift
-//  MemeMe 1.0
+//  MemeMe 2.0
 //
 //  Created by Frances Koo on 9/14/20.
 //  Copyright © 2020 happyengr1. All rights reserved.
 //
 //  History
-//  20 Sep 2020     viewWillAppear(_:) gets called, bottom text field moves when keyboard is shown
-//  21 Sep 2020     remove debug statements
-//  29 Sep 2020     added share button
-//                  check if memeImage is valid
-//  2 Oct 2020      added checkForValidMeme(), showActivityView()
-//                  added completionWithItemsHandler(), save()
-//  3 Oct 2020      added checkForValidInfo(), activity view is shown
-//  4 Oct 2020      only allow Activity View Controller for iPhone
-//  6 Oct 2020      Feedback: Add chooseImageFromSource() to reduce redundancy
-//                  Feedback: Add Navigation Bar and Action Button
-//                  Feedback: Disable Camera Button if camera not available
-//  7 Oct 2020      Code Review: Renamed ViewController to MemeEditorViewController
-//                  Code Review: Added setupTextField() to reduce redundancy
-//                  Code Review: Removed redundancies in chooseImageFromSource()
-//                  Code Review: Organize to Properties, Functions, Extensions
-//                  Code Review: Made extensions for UITextFieldDelegate
-//                  Code Review: Made extensions for UIImagePickerControllerDelegate, UINavigationControllerDelegate
-//  8 Oct 2020      Feedback: Changed comment ViewController.soft --> MemeEditorViewController.swift
-//                  Feedback: Changed image view size (bottom of navigation bar to top of toolbar)
-//                  Feedback: Added permission to save photos in info.plist
+//  8 Oct 2020      MemeMe 1.0 submitted'
+// 28 Nov 2020      Added memes.append in save()
 //
 
 import Foundation
@@ -107,7 +89,6 @@ class MemeEditorViewController: UIViewController {
     
     
     // MARK: - Memed Object
-        
     //--------------------------
     func save() {
         // Create the meme
@@ -115,6 +96,10 @@ class MemeEditorViewController: UIViewController {
                         bottomText: bottomTextField.text!,
                         originalImage: imagePickerView.image!,
                         memedImage: memedImage)
+        
+        // UIKit 8.4: Add it to the memes array on the Application Delegate
+        (UIApplication.shared.delegate as! AppDelegate).memes.append(meme)
+
     }   /* save */
 
     //--------------------------
