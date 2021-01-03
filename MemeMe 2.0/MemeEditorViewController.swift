@@ -240,9 +240,11 @@ class MemeEditorViewController: UIViewController {
     
     // MARK: Cancel Button
     
-    @IBAction func cancelButton(_ sender: Any) {
+    @IBAction func cancelButton(_ sender: AnyObject) {
         
-        dismiss(animated: true, completion: nil)
+        /// View was presented by Navigation Controller so
+        // dismiss(animated: true, completion: nil)
+        navigationController?.popViewController(animated: true)
         
     }   /* cancelButton*/
 
