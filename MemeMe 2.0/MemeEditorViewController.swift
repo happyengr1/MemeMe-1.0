@@ -6,8 +6,12 @@
 //  Copyright © 2020 happyengr1. All rights reserved.
 //
 //  History
-//  8 Oct 2020      MemeMe 1.0 submitted'
-// 28 Nov 2020      Added memes.append in save()
+//  8 Oct 2020  MemeMe 1.0 submitted'
+// 28 Nov 2020  Added memes.append in save()
+// 13 Dec 2020  Next: Add Cancel Button to get to Meme Editor in Storyboard
+// 21 Dec 2020  Change imagePickerController -->> imagePicker in pickAnImage()
+// 02 Jan 2021  Added cancelButton IBOutlet and IBAction
+// 02 Jan 2021  Changed segue from Table and Collection to present modally
 //
 
 import Foundation
@@ -32,6 +36,7 @@ class MemeEditorViewController: UIViewController {
     @IBOutlet weak var topTextField: UITextField!
     @IBOutlet weak var bottomTextField: UITextField!
     @IBOutlet weak var cameraButton: UIBarButtonItem!
+    @IBOutlet weak var actionButton: UIBarButtonItem!
     
     // MARK: Attributed String
     let memeTextAttributes: [NSAttributedString.Key : Any] = [
@@ -54,17 +59,19 @@ class MemeEditorViewController: UIViewController {
     }   /* setupTextField */
     
     //--------------------------------------
+    // viewDidLoad is only triggered once
+    //--------------------------------------
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
         setupTextField(topTextField, text: "TOP")
         setupTextField(bottomTextField, text: "BOTTOM")
-        
+
         self.modalPresentationStyle = .fullScreen
         
     }   /* viewDidLoad */
-        
+
     //--------------------------------------
     override func viewWillAppear(_ animated: Bool) {
         
@@ -98,7 +105,8 @@ class MemeEditorViewController: UIViewController {
                         memedImage: memedImage)
         
         // UIKit 8.4: Add it to the memes array on the Application Delegate
-        (UIApplication.shared.delegate as! AppDelegate).memes.append(meme)
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.memes.append(meme)
 
     }   /* save */
 
@@ -133,10 +141,11 @@ class MemeEditorViewController: UIViewController {
         return memedImage
         
     }   /* generateMemedImage */
-    
-    // MARK: - Action / Share
 
+    
     //--------------------------
+    // MARK: - Action / Share Button
+
     func checkForValidInfo() -> Bool {
 
         var isValidInfo: Bool = true
@@ -172,6 +181,7 @@ class MemeEditorViewController: UIViewController {
         return isValidMeme
 
     }   /* checkForValidMeme */
+    
     
     //--------------------------
     func showActivityView() {
@@ -213,7 +223,7 @@ class MemeEditorViewController: UIViewController {
     }   /* showActivityView */
     
     //--------------------------
-    @IBAction func actionButton(_ sender: Any) {            /* IBAction: action button */
+    @IBAction func actionButton(_ sender: Any) {
 
         /* Check if meme has been created, by checking all the meme fields */
         if (checkForValidInfo() == true) {
@@ -224,7 +234,20 @@ class MemeEditorViewController: UIViewController {
         }
     }   /* actionButton */
     
-}
+    
+    //--------------------------
+    // >>>> HERE <<<< Should I delete this function?
+    
+    // MARK: Cancel Button
+    
+    @IBAction func cancelButton(_ sender: Any) {
+        
+        dismiss(animated: true, completion: nil)
+        
+    }   /* cancelButton*/
+
+}   /* MemeEditorViewController */
+
 
 // MARK: - Image Pickers
 
