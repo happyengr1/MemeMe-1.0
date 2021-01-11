@@ -11,7 +11,7 @@
 // 13 Dec 2020  Next: Add Cancel Button to get to Meme Editor in Storyboard
 // 21 Dec 2020  Change imagePickerController -->> imagePicker in pickAnImage()
 // 02 Jan 2021  Added cancelButton IBOutlet and IBAction
-// 02 Jan 2021  Changed segue from Table and Collection to present modally
+// 10 Jan 2021  Table and Collection presented using Push; Dismiss using Pop
 //
 
 import Foundation
@@ -236,15 +236,13 @@ class MemeEditorViewController: UIViewController {
     
     
     //--------------------------
-    // >>>> HERE <<<< Should I delete this function?
-    
     // MARK: Cancel Button
     
     @IBAction func cancelButton(_ sender: AnyObject) {
         
-        /// View was presented by Navigation Controller so
-        // dismiss(animated: true, completion: nil)
+        /// View was presented using Push segue, so use Pop to dismiss
         navigationController?.popViewController(animated: true)
+        dismiss(animated: true, completion: nil)
         
     }   /* cancelButton*/
 
