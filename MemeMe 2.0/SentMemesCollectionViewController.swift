@@ -15,8 +15,6 @@ import UIKit
 
 class SentMemesCollectionViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
-    @IBOutlet weak var collectionView: UICollectionView!
-    
     var memes: [Meme] {
         return(UIApplication.shared.delegate as! AppDelegate).memes
     }
