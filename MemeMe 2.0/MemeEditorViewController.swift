@@ -12,6 +12,7 @@
 // 21 Dec 2020  Change imagePickerController -->> imagePicker in pickAnImage()
 // 02 Jan 2021  Added cancelButton IBOutlet and IBAction
 // 10 Jan 2021  Table and Collection presented using Push; Dismiss using Pop
+// 15 Jan 2021  completionWIthItemsHandler logic
 //
 
 import Foundation
@@ -186,8 +187,6 @@ class MemeEditorViewController: UIViewController {
     //--------------------------
     func showActivityView() {
         
-        var goAhead: Bool = false
-
         var memedImg : UIImage = generateMemedImage() as UIImage
         
         if (checkForValidMeme() == true) {
@@ -195,28 +194,28 @@ class MemeEditorViewController: UIViewController {
             // Launch the activity view controller
             let activityController = UIActivityViewController(activityItems: [memedImg], applicationActivities: nil)
             
-            // for iPhone
-            if (UIDevice.current.userInterfaceIdiom == .phone) {
-                print("showActivityView: running on iPhone")
-                self.present(activityController, animated: true, completion: nil)
-                goAhead = true
+            // Screen for iPhone
+            if (UIDevice.current.userInterfaceIdiom != .phone) {
 
-            // for other devices
-            } else {
+                // Exit if not an iPhone
                 print(UIDevice.current.model, terminator: "")
                 print(" is not a supported device for this app")
-                goAhead = false
-            }
-            
-            if goAhead {
+
+            } else {
+                
+                // Save the memed image
+                print("showActivityView: iPhone detected")
+                self.present(activityController, animated: true, completion: nil)
+
                 activityController.completionWithItemsHandler = {
                     (activity, success, items, error) in
-                    if (success && (error != nil)) {
+                    // if (success && (error == nil)) {
+                    if success {
                         // Save the info into the meme structure
                         self.save()
                     }
                 }
-            }
+            }   /* iPhone */
         } else {
             print("showActivityView: showActivityView: No meme was generated")
         }

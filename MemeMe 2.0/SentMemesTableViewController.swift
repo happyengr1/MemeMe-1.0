@@ -1,5 +1,5 @@
 //
-//  SentTableViewController.swift
+//  SentMemesTableViewController.swift
 //  MemeMe 2.0
 //
 //  Created by Frances Koo on 12/11/20.
@@ -8,11 +8,18 @@
 //  History:
 //  12 Dec 2020 Added tableView() protocol
 //  12 Dec 2020 Next: Show memedImage and textLabel
+//  14 Jan 2021 Added var memes, connected IBOutlet
 //
 
 import UIKit
 
-class SentTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class SentMemesTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    
+    @IBOutlet weak var tableView: UITableView!
+    
+    var memes: [Meme] {
+        return(UIApplication.shared.delegate as! AppDelegate).memes
+    }
     
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     // use appDelegate.memes to access memes
@@ -26,7 +33,7 @@ class SentTableViewController: UIViewController, UITableViewDataSource, UITableV
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // tableView.reloadData()
+        tableView.reloadData()
         
     }
     

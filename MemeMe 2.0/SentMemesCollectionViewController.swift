@@ -1,5 +1,5 @@
 //
-//  SentCollectionViewController.swift
+//  SentMemesCollectionViewController.swift
 //  MemeMe 2.0
 //
 //  Created by Frances Koo on 12/11/20.
@@ -8,13 +8,18 @@
 //  History:
 //  12 Dec 2020 Added collectionView() protocol
 //  12 Dec 2020 Next: Add cell.imageView
+//  14 Jan 2021 Added var memes, connected IBOutlet
 //
 
 import UIKit
 
-class SentCollectionViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
+class SentMemesCollectionViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
-    @IBOutlet weak var navCollectionTitle: UINavigationController?
+    @IBOutlet weak var collectionView: UICollectionView!
+    
+    var memes: [Meme] {
+        return(UIApplication.shared.delegate as! AppDelegate).memes
+    }
     
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     // use appDelegate.memes to access memes
