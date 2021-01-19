@@ -9,11 +9,14 @@
 //  12 Dec 2020 Added collectionView() protocol
 //  12 Dec 2020 Next: Add cell.imageView
 //  14 Jan 2021 Added var memes, connected IBOutlet
+//  19 Jan 2021 added collectionView
 //
 
 import UIKit
 
 class SentMemesCollectionViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
+    
+    @IBOutlet weak var collectionView: UICollectionView!
     
     var memes: [Meme] {
         return(UIApplication.shared.delegate as! AppDelegate).memes
@@ -24,13 +27,20 @@ class SentMemesCollectionViewController: UIViewController, UICollectionViewDataS
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         // Do any additional setup after loading the view.
+        let space: CGFloat
+        let dimension = (view.frame.size.width - (2*space))/3.0
+        
+        flowLayout.minimumInteritemSpacing - space
+        flowLayout.minimumLineSpacing = space
+        flowLayout.itemSize = CGSize(width: dimension, height: dimension)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // collectionView.reloadData()
+        collectionView.reloadData()
     }
     
     // MARK: Collectionfunc overridefunccollectionView
@@ -43,11 +53,9 @@ class SentMemesCollectionViewController: UIViewController, UICollectionViewDataS
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
             
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath)
-        
-        let meme = appDelegate.memes[indexPath.row]
+        let meme = appDelegate.memes[(indexPath as NSIndexPath).row]
 
-        // >>>> HERE <<<<
-        // cell.imageView!.image = meme.memedImage
+        cell.imageView!.image = meme.memedImage
         
         return cell
     }
