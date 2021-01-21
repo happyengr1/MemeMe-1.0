@@ -9,14 +9,15 @@
 //  12 Dec 2020 Added collectionView() protocol
 //  12 Dec 2020 Next: Add cell.imageView
 //  14 Jan 2021 Added var memes, connected IBOutlet
-//  19 Jan 2021 added collectionView
+//  19 Jan 2021 added flowLayout
 //
 
+import Foundation
 import UIKit
 
 class SentMemesCollectionViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
-    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
     
     var memes: [Meme] {
         return(UIApplication.shared.delegate as! AppDelegate).memes
@@ -24,15 +25,15 @@ class SentMemesCollectionViewController: UIViewController, UICollectionViewDataS
     
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     // use appDelegate.memes to access memes
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        let space: CGFloat
+        let space: CGFloat = 3.0
         let dimension = (view.frame.size.width - (2*space))/3.0
         
-        flowLayout.minimumInteritemSpacing - space
+        flowLayout.minimumInteritemSpacing = space
         flowLayout.minimumLineSpacing = space
         flowLayout.itemSize = CGSize(width: dimension, height: dimension)
     }
@@ -40,7 +41,7 @@ class SentMemesCollectionViewController: UIViewController, UICollectionViewDataS
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        collectionView.reloadData()
+        // collectionView!.reloadData()
     }
     
     // MARK: Collectionfunc overridefunccollectionView
@@ -53,9 +54,9 @@ class SentMemesCollectionViewController: UIViewController, UICollectionViewDataS
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
             
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath)
-        let meme = appDelegate.memes[(indexPath as NSIndexPath).row]
+        let meme = appDelegate.memes[indexPath.row]
 
-        cell.imageView!.image = meme.memedImage
+        // cell.cellImage!.image = meme.memedImage
         
         return cell
     }
